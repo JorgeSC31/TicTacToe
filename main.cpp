@@ -17,6 +17,8 @@ void colorWhite();
 void colorError();
 void colorPick(char board);
 
+bool WindowSize(int Width, int high);
+
 void menu();
 void drawGame();
 void game(int option);
@@ -28,6 +30,7 @@ int Tie();
 
 int main()
 {
+    WindowSize(50,25);
     menu();
     return 0;
 }
@@ -80,6 +83,7 @@ void colorPick(char board)
 
 void menu()
 {
+    SetConsoleTitle("TIC TAC TOE");
     for(int i=0; i<9; i++)board[i]=i+'1';
     for(int i=0; i<9; i++)moves[i]="";
     moveN=0;
@@ -262,4 +266,26 @@ int Tie()
 {
     for(int i='1'; i<='9'; i++)if(board[i-'1']==i)return 0;
     return 1;
+}
+
+bool WindowSize(int Width, int high) {
+	_COORD Coordenada;
+	Coordenada.X = Width;
+	Coordenada.Y = high;
+
+	_SMALL_RECT Rect;
+	Rect.Top = 0;
+	Rect.Left = 0;
+	Rect.Right = Width - 1;
+	Rect.Bottom = high - 1;
+
+	// Obtener el handle de la consola
+	HANDLE hConsola = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	// Ajustar el buffer al nuevo tamaño
+	SetConsoleScreenBufferSize(hConsola, Coordenada);
+
+	// Cambiar tamaño de consola a lo especificado en el buffer
+	SetConsoleWindowInfo(hConsola, TRUE, &Rect);
+	return TRUE;
 }
